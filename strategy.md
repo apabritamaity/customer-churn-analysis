@@ -174,7 +174,7 @@ analytics.py
 health.py
 ```
 
-Example
+**Example:** 
 
 ```
 POST /predict
