@@ -571,3 +571,37 @@ monitoring/     → Prometheus/Grafana configs (if added later)
 ```
 
 These aren't required for version 1, but they're common in production systems and make it easier to extend the project in the future.
+
+
+
+### Add training automation
+
+customer-churn-analysis/
+```
+│
+├── research/
+│   ├── notebooks/
+│
+├── ml_pipeline/
+│   ├── data_loader.py
+│   ├── preprocessing.py
+│   ├── feature_engineering.py
+│   ├── train.py
+│   ├── evaluate.py
+│   ├── export_model.py
+│   └── config.py
+│
+├── artifacts/
+│   ├── pipeline.pkl
+│   ├── metadata.json
+│   ├── feature_columns.json
+│   ├── model_metrics.json
+│   └── threshold.json
+│
+├── backend/
+│
+├── frontend/
+│
+└── tests/
+
+```
