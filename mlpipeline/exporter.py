@@ -1,26 +1,27 @@
 import json
 import joblib
-import config
+import matplotlib.pyplot as plt
 
-from ml_pipeline.config import (
-    PIPELINE_FILE,
-    METADATA_FILE
+from config import (
+    MODEL_FILE,
+    METADATA_FILE,
+    METRICS_DIR
 )
 
 
-def export_artifacts(grid_search):
+def export_model_artifacts(grid_search):
 
     # Save trained pipeline
     joblib.dump(
         grid_search.best_estimator_,
-        PIPELINE_FILE
+        MODEL_FILE
     )
 
     # Save metadata
     metadata = {
 
         "model_name":
-            type(grid_search.best_estimator_.named_steps["classifier"]).__name__,
+            grid_search.best_estimator_.__class__.__name__,
 
         "best_params":
             grid_search.best_params_,
@@ -32,3 +33,34 @@ def export_artifacts(grid_search):
 
     with open(METADATA_FILE, "w") as f:
         json.dump(metadata, f, indent=4)
+
+
+## Export metrics artifacts
+def export_metrices(metrices, roc_curve_data, best_threshold):
+    
+    with open(METRICS_DIR / "metrices.json", "w") as f:
+        json.dump(metrices, f, indent=4)
+
+    with open(METRICS_DIR / "threshold.json", "w") as f:
+        json.dump(best_threshold, f)
+
+    # Export ROC curve
+    plt.figure(figsize=(8,6))
+    plt.plot(
+        roc_curve_data["fpr"],
+        roc_curve_data["tpr"],
+        label=f"AUC = {metrices["roc_auc_score"]:.3f}",
+        linewidth=2
+    )
+    plt.plot(
+        [0,1],
+        [0,1],
+        linestyle="--",
+        label="Random Classifier"
+    )
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title("ROC Curve")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(METRICS_DIR / "roc_curve.png", dpi=300, bbox_inches="tight")

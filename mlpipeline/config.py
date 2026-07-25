@@ -41,16 +41,16 @@ RANDOM_STATE = 42
 
 MODEL_NAME = "RandomForest"
 
-THRESHOLD = 0.41
+THRESHOLD = 0.45
 
 # ---------------------------------
 # Artifact Names
 # ---------------------------------
 
-PIPELINE_FILE = MODEL_DIR / "pipeline.pkl"
+MODEL_FILE = MODEL_DIR / "model.pkl"
 
 METADATA_FILE = MODEL_DIR / "metadata.json"
 
 FEATURE_FILE = MODEL_DIR / "feature_columns.json"
 
-METRICS_FILE = MODEL_DIR / "metrics.json"
+METRICS_DIR = MODEL_DIR / "metrices" 

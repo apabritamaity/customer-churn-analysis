@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 import joblib
+from exporter import export_model_artifacts
 
 def hypertuning(X_train, y_train):
     param_grid = {
@@ -16,19 +17,17 @@ def hypertuning(X_train, y_train):
         estimator = RandomForestClassifier(random_state=42),
         param_grid = param_grid,
         cv=5,
+        scoring='recall',
         n_jobs=-1
     )
 
     ## Fit
     clf_grid.fit(X_train, y_train)
 
-    ## Get the best model
+    # Export the model artifacts
+    export_model_artifacts(grid_search=clf_grid)
+
     best_clf = clf_grid.best_estimator_
-    best_params = clf_grid.best_params_
-
-    # Export the model to a file
-    joblib.dump(best_clf, '../Artifacts/Model/telco_churn_final_model.pkl')
-
     return best_clf
 
 
